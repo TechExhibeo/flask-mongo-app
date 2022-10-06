@@ -25,7 +25,7 @@ from verification import confirm_token
 
 
 # Create app
-app = Flask(__name__)
+application = app = Flask(__name__)
 
 # Configuration
 config = configparser.ConfigParser()
