@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import timezone
 import uuid
 
 
@@ -13,7 +14,7 @@ class Message():
         self.from_name = from_name
         self.to_id = to_id
         self.to_name = to_name
-        self.timestamp = datetime.utcnow()
+        self.timestamp = datetime.now(tz=timezone.utc)        
         self.date_string = self.timestamp.strftime("%-d %b %Y %H:%M")
         self.id = uuid.uuid4().hex if not id else id
         self.deleted = deleted
