@@ -208,13 +208,13 @@ def logout():
 @app.route('/add_note', methods=['POST'])
 @login_required
 def add_note():
-    title = request.form.get("title")
+    t1 = title = request.form.get("title")
     body = request.form.get("body")
     user_id = current_user.id
     user_name = current_user.display_name()
     note = Note(title, body, user_id, user_name)
     if mongo.db.notes.insert_one(note.dict()):
-        return "Success! Note added: " + title
+        return "Success! Note added: " + t1
     else:
         return "Error! Could not add note"
 
@@ -234,19 +234,19 @@ def delete_note():
 @app.route('/send_message', methods=['POST'])
 @login_required
 def send_message():
-    title = request.form.get("title")
+    t2 = title = request.form.get("title")
     body = request.form.get("body")
     from_id = current_user.id
     from_name = current_user.display_name()
     to_id = request.form.get("user")
     to_user_dict = mongo.db.users.find_one({"id": to_id})
     to_user = User.make_from_dict(to_user_dict)
-    to_name = to_user.display_name()
+    tn = to_name = to_user.display_name()
     message = Message(title, body, from_id, from_name, to_id, to_name)
     if mongo.db.messages.insert_one(message.dict()):
         send_message_email(from_user=current_user,
                            to_user=to_user, message=message)
-        return "Success! Message sent to " + to_name + ": " + title
+        return "Success! Message sent to " + tn + ": " + t2
     else:
         return "Error! Could not send message"
 
