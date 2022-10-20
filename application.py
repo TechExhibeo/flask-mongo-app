@@ -340,4 +340,4 @@ if os.environ.get('APP_LOCATION') == 'heroku':
     port = int(os.environ.get("PORT", 8000))
     app.run(host="0.0.0.0", port=port)
 else:
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=False)
