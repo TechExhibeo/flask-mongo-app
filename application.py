@@ -209,12 +209,14 @@ def logout():
 @login_required
 def add_note():
     title = request.form.get("title")
+    #sanitize input from web form
+    bad_chars = [';', ':', '!', '*', '(', '?']
     body = request.form.get("body")
     user_id = current_user.id
     user_name = current_user.display_name()
     note = Note(title, body, user_id, user_name)
     if mongo.db.notes.insert_one(note.dict()):
-        return "Success! Note added: " + title
+        return "Success! Note added: " + set(title) - set(bad_chars)
     else:
         return "Error! Could not add note"
 
@@ -235,6 +237,8 @@ def delete_note():
 @login_required
 def send_message():
     title = request.form.get("title")
+#sanitize input from web form
+    bad_chars = [';', ':', '!', '*', '(', '?']
     body = request.form.get("body")
     from_id = current_user.id
     from_name = current_user.display_name()
