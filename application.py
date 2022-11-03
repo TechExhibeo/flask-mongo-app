@@ -20,7 +20,6 @@ import os
 from user import User, Anonymous
 from message import Message
 from note import Note
-from email_utility import send_email, send_registration_email, send_message_email
 from verification import confirm_token
 
 
@@ -133,7 +132,6 @@ def register():
             # Insert user record to database
             if users.insert_one(user_data_to_save):
                 login_user(new_user)
-                send_registration_email(new_user)
                 return redirect(url_for('profile'))
             else:
                 # Handle database error
@@ -249,13 +247,6 @@ def send_message():
     to_user = User.make_from_dict(to_user_dict)
     to_name = to_user.display_name()
     message = Message(san_title, body, from_id, from_name, to_id, to_name)
-    if mongo.db.messages.insert_one(message.dict()):
-        send_message_email(from_user=current_user,
-                           to_user=to_user, message=message)
-        return "Success! Message sent to " + to_name + ": " + san_title
-    else:
-        return "Error! Could not send message"
-
 
 # Delete message
 @app.route('/delete_message', methods=['POST'])
